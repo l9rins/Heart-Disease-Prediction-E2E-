@@ -2,14 +2,19 @@
  * Heart Disease Prediction - Main Application
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Activity, Wifi, WifiOff, Github, AlertCircle } from 'lucide-react';
 import { HeartForm } from './components/HeartForm';
 import { ResultModal } from './components/ResultModal';
+import { SamplePresets } from './components/SamplePresets';
+import { HistoryPanel } from './components/HistoryPanel';
 import { predictHeartDisease, checkHealth } from './api';
-import type { HeartInputData, PredictionResponse } from './types';
+import type { HeartInputData, PredictionResponse, PredictionHistoryEntry, SamplePreset } from './types';
 import './index.css';
+
+const HISTORY_STORAGE_KEY = 'heart-disease-prediction-history';
+const MAX_HISTORY_ENTRIES = 10;
 
 function App() {
     const [result, setResult] = useState<PredictionResponse | null>(null);
@@ -17,6 +22,29 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+    const [history, setHistory] = useState<PredictionHistoryEntry[]>([]);
+    const [presetData, setPresetData] = useState<HeartInputData | null>(null);
+
+    // Load history from localStorage on mount
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+            if (stored) {
+                setHistory(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.error('Failed to load history:', e);
+        }
+    }, []);
+
+    // Save history to localStorage when it changes
+    useEffect(() => {
+        try {
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
+        } catch (e) {
+            console.error('Failed to save history:', e);
+        }
+    }, [history]);
 
     // Check API health on mount
     useEffect(() => {
@@ -43,6 +71,16 @@ function App() {
             const prediction = await predictHeartDisease(data);
             setResult(prediction);
             setIsModalOpen(true);
+
+            // Add to history
+            const entry: PredictionHistoryEntry = {
+                id: crypto.randomUUID(),
+                timestamp: Date.now(),
+                input: data,
+                result: prediction,
+            };
+
+            setHistory(prev => [entry, ...prev].slice(0, MAX_HISTORY_ENTRIES));
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message || 'Failed to get prediction. Please try again.');
@@ -53,6 +91,19 @@ function App() {
             setIsLoading(false);
         }
     };
+
+    const handlePresetSelect = useCallback((preset: SamplePreset) => {
+        setPresetData(preset.data);
+    }, []);
+
+    const handleLoadHistoryEntry = useCallback((input: HeartInputData) => {
+        setPresetData(input);
+    }, []);
+
+    const handleClearHistory = useCallback(() => {
+        setHistory([]);
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+    }, []);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-cyber-black via-cyber-dark to-cyber-black">
@@ -94,7 +145,7 @@ function App() {
                                     <WifiOff className="w-4 h-4 text-risk-red" />
                                 )}
                                 <span className={`text-xs ${apiStatus === 'online' ? 'text-medical-green' :
-                                        apiStatus === 'offline' ? 'text-risk-red' : 'text-gray-400'
+                                    apiStatus === 'offline' ? 'text-risk-red' : 'text-gray-400'
                                     }`}>
                                     {apiStatus === 'online' ? 'API Online' :
                                         apiStatus === 'offline' ? 'API Offline' : 'Checking...'}
@@ -120,7 +171,7 @@ function App() {
             <main className="max-w-7xl mx-auto px-4 py-8">
                 {/* Title Section */}
                 <motion.div
-                    className="text-center mb-12"
+                    className="text-center mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
@@ -141,7 +192,7 @@ function App() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="glass-card p-4 bg-risk-red/10 border-risk-red/30 mb-8 flex items-center gap-3"
+                            className="glass-card p-4 bg-risk-red/10 border-risk-red/30 mb-6 flex items-center gap-3"
                         >
                             <AlertCircle className="w-5 h-5 text-risk-red flex-shrink-0" />
                             <div>
@@ -161,15 +212,30 @@ function App() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="glass-card p-4 bg-risk-red/10 border-risk-red/30 mb-8"
+                            className="glass-card p-4 bg-risk-red/10 border-risk-red/30 mb-6"
                         >
                             <p className="text-risk-red">{error}</p>
                         </motion.div>
                     )}
                 </AnimatePresence>
 
+                {/* Sample Presets */}
+                <SamplePresets onSelect={handlePresetSelect} />
+
+                {/* History Panel */}
+                <HistoryPanel
+                    history={history}
+                    onLoadEntry={handleLoadHistoryEntry}
+                    onClear={handleClearHistory}
+                />
+
                 {/* Form */}
-                <HeartForm onSubmit={handleSubmit} isLoading={isLoading} />
+                <HeartForm
+                    onSubmit={handleSubmit}
+                    isLoading={isLoading}
+                    presetData={presetData}
+                    onPresetApplied={() => setPresetData(null)}
+                />
 
                 {/* Medical Disclaimer */}
                 <motion.div

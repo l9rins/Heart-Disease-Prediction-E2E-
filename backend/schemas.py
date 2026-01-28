@@ -147,3 +147,48 @@ class HealthResponse(BaseModel):
     status: str = Field(default="healthy")
     model_loaded: bool = Field(default=False)
     version: str = Field(default="1.0.0")
+
+
+class MetricsResponse(BaseModel):
+    """API metrics response schema."""
+    
+    total_predictions: int = Field(
+        description="Total number of predictions served since startup"
+    )
+    avg_risk_score: float | None = Field(
+        default=None,
+        description="Average risk score across all predictions"
+    )
+    high_risk_count: int = Field(
+        description="Number of high-risk predictions (>0.7)"
+    )
+    low_risk_count: int = Field(
+        description="Number of low-risk predictions (<0.3)"
+    )
+    uptime_seconds: float = Field(
+        description="Server uptime in seconds"
+    )
+
+
+class ModelInfoResponse(BaseModel):
+    """Model metadata response schema."""
+    
+    model_loaded: bool = Field(
+        description="Whether the model is currently loaded"
+    )
+    training_date: str | None = Field(
+        default=None,
+        description="Date when model was trained (ISO format)"
+    )
+    metrics: dict | None = Field(
+        default=None,
+        description="Training metrics (accuracy, recall, AUC)"
+    )
+    feature_names: list[str] = Field(
+        default_factory=list,
+        description="List of input feature names"
+    )
+    model_version: str = Field(
+        default="1.0.0",
+        description="Model version identifier"
+    )

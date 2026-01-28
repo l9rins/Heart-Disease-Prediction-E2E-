@@ -200,3 +200,83 @@ export const DEFAULT_VALUES: HeartInputData = {
     ca: 0,
     thal: 3,
 };
+
+// Prediction history entry
+export interface PredictionHistoryEntry {
+    id: string;
+    timestamp: number;
+    input: HeartInputData;
+    result: PredictionResponse;
+}
+
+// Sample presets for demo
+export interface SamplePreset {
+    name: string;
+    description: string;
+    riskLevel: 'low' | 'medium' | 'high';
+    data: HeartInputData;
+}
+
+export const SAMPLE_PRESETS: SamplePreset[] = [
+    {
+        name: 'Low Risk Profile',
+        description: 'Young, healthy female with normal values',
+        riskLevel: 'low',
+        data: {
+            age: 35,
+            sex: 0,
+            cp: 1,
+            trestbps: 115,
+            chol: 180,
+            fbs: 0,
+            restecg: 0,
+            thalach: 175,
+            exang: 0,
+            oldpeak: 0.5,
+            slope: 1,
+            ca: 0,
+            thal: 3,
+        },
+    },
+    {
+        name: 'Medium Risk Profile',
+        description: 'Middle-aged male with elevated markers',
+        riskLevel: 'medium',
+        data: {
+            age: 55,
+            sex: 1,
+            cp: 2,
+            trestbps: 145,
+            chol: 260,
+            fbs: 1,
+            restecg: 1,
+            thalach: 140,
+            exang: 0,
+            oldpeak: 1.8,
+            slope: 2,
+            ca: 1,
+            thal: 6,
+        },
+    },
+    {
+        name: 'High Risk Profile',
+        description: 'Elderly male with multiple risk factors',
+        riskLevel: 'high',
+        data: {
+            age: 70,
+            sex: 1,
+            cp: 4,
+            trestbps: 180,
+            chol: 350,
+            fbs: 1,
+            restecg: 2,
+            thalach: 100,
+            exang: 1,
+            oldpeak: 4.0,
+            slope: 2,
+            ca: 3,
+            thal: 7,
+        },
+    },
+];
+

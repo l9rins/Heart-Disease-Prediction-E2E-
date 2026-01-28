@@ -4,6 +4,7 @@
  */
 
 import { useForm, Controller } from 'react-hook-form';
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
@@ -35,6 +36,8 @@ const heartSchema = z.object({
 interface HeartFormProps {
     onSubmit: (data: HeartInputData) => void;
     isLoading: boolean;
+    presetData?: HeartInputData | null;
+    onPresetApplied?: () => void;
 }
 
 // Pill button component
@@ -100,12 +103,20 @@ function SliderInput({ min, max, step, value, onChange, name, unit = '' }: Slide
     );
 }
 
-export function HeartForm({ onSubmit, isLoading }: HeartFormProps) {
-    const { control, handleSubmit, watch, formState: { errors } } = useForm<HeartInputData>({
+export function HeartForm({ onSubmit, isLoading, presetData, onPresetApplied }: HeartFormProps) {
+    const { control, handleSubmit, watch, reset, formState: { errors } } = useForm<HeartInputData>({
         resolver: zodResolver(heartSchema),
         defaultValues: DEFAULT_VALUES,
         mode: 'onChange',
     });
+
+    // Apply preset data when it changes
+    useEffect(() => {
+        if (presetData) {
+            reset(presetData);
+            onPresetApplied?.();
+        }
+    }, [presetData, reset, onPresetApplied]);
 
     const formValues = watch();
 

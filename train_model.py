@@ -9,8 +9,10 @@ Author: Senior ML Engineer
 Dataset: UCI Cleveland Heart Disease (303 samples, 14 features)
 """
 
+import json
 import os
 import warnings
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -421,6 +423,34 @@ def main() -> None:
         # Save model
         joblib.dump(pipeline, MODEL_PATH)
         print(f"\n[OK] Saved pipeline: {MODEL_PATH}")
+        
+        # Save model metadata for API
+        model_metadata = {
+            "training_date": datetime.now().isoformat(),
+            "metrics": {
+                "accuracy": round(metrics["accuracy"], 4),
+                "roc_auc": round(metrics["roc_auc"], 4),
+                "recall_positive": round(metrics["recall_positive"], 4),
+                "recall_negative": round(metrics["recall_negative"], 4),
+                "cv_roc_auc_mean": round(metrics["cv_roc_auc_mean"], 4)
+            },
+            "hyperparameters": {
+                "n_estimators": 200,
+                "learning_rate": 0.1,
+                "max_depth": 6,
+                "scale_pos_weight": round(scale_pos_weight, 3)
+            },
+            "dataset_info": {
+                "total_samples": len(X),
+                "train_samples": len(X_train),
+                "test_samples": len(X_test)
+            }
+        }
+        
+        metadata_path = MODEL_DIR / "model_metadata.json"
+        with open(metadata_path, "w") as f:
+            json.dump(model_metadata, f, indent=2)
+        print(f"[OK] Saved model metadata: {metadata_path}")
         
         # Log model to MLflow
         mlflow.sklearn.log_model(pipeline, "heart_disease_model")

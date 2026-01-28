@@ -31,6 +31,45 @@ class TestHealthEndpoint:
         assert data["status"] == "healthy"
 
 
+class TestMetricsEndpoint:
+    """Tests for /metrics endpoint."""
+    
+    def test_metrics_returns_200(self):
+        """Metrics endpoint should return 200 OK."""
+        response = client.get("/metrics")
+        assert response.status_code == 200
+    
+    def test_metrics_response_structure(self):
+        """Metrics response should have expected fields."""
+        response = client.get("/metrics")
+        data = response.json()
+        
+        assert "total_predictions" in data
+        assert "high_risk_count" in data
+        assert "low_risk_count" in data
+        assert "uptime_seconds" in data
+        assert data["total_predictions"] >= 0
+
+
+class TestModelInfoEndpoint:
+    """Tests for /model-info endpoint."""
+    
+    def test_model_info_returns_200(self):
+        """Model info endpoint should return 200 OK."""
+        response = client.get("/model-info")
+        assert response.status_code == 200
+    
+    def test_model_info_response_structure(self):
+        """Model info response should have expected fields."""
+        response = client.get("/model-info")
+        data = response.json()
+        
+        assert "model_loaded" in data
+        assert "feature_names" in data
+        assert "model_version" in data
+        assert isinstance(data["feature_names"], list)
+
+
 class TestPredictEndpoint:
     """Tests for /predict endpoint."""
     
