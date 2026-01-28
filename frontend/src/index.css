@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyber-black: #0f172a;
+  --medical-green: #10b981;
+  --risk-red: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  min-height: 100vh;
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism base styles */
+@layer components {
+  .glass-card {
+    @apply bg-[rgba(255,255,255,0.05)] backdrop-blur-xl rounded-2xl border border-[rgba(255,255,255,0.1)] shadow-glass;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:bg-[rgba(255,255,255,0.08)] hover:border-medical-green/30 hover:shadow-glow-green;
+  }
+
+  .input-glass {
+    @apply bg-[rgba(255,255,255,0.05)] backdrop-blur-xl rounded-xl border border-[rgba(255,255,255,0.1)] 
+           px-4 py-3 text-white placeholder:text-gray-500 
+           focus:outline-none focus:ring-2 focus:ring-medical-green/50 focus:border-medical-green/50
+           transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-medical-green to-medical-green-light 
+           text-white font-semibold py-3 px-6 rounded-xl
+           shadow-lg shadow-medical-green/30
+           hover:shadow-xl hover:shadow-medical-green/40
+           transform hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+           disabled:hover:scale-100 disabled:hover:shadow-lg;
+  }
+
+  .btn-danger {
+    @apply bg-gradient-to-r from-risk-red to-risk-red-light 
+           text-white font-semibold py-3 px-6 rounded-xl
+           shadow-lg shadow-risk-red/30
+           hover:shadow-xl hover:shadow-risk-red/40
+           transform transition-all duration-300;
+  }
+
+  .toggle-pill {
+    @apply relative inline-flex items-center justify-center px-4 py-2 rounded-full
+           border border-gray-600 text-gray-400 cursor-pointer
+           transition-all duration-300
+           hover:border-medical-green/50 hover:text-white;
+  }
+
+  .toggle-pill-active {
+    @apply bg-medical-green/20 border-medical-green text-medical-green font-medium;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-white mb-6 flex items-center gap-3;
+  }
+
+  .slider-track {
+    @apply w-full h-2 bg-gray-700 rounded-full cursor-pointer appearance-none;
+  }
+
+  .slider-track::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 bg-medical-green rounded-full cursor-pointer
+           shadow-lg shadow-medical-green/50 transition-all duration-300;
+  }
+
+  .slider-track::-webkit-slider-thumb:hover {
+    @apply scale-110 shadow-xl shadow-medical-green/60;
+  }
+}
+
+/* Bento Grid Layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Risk Gauge Animation */
+.risk-gauge {
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  @apply bg-gray-700/50 animate-pulse rounded-lg;
+}
+
+/* Custom Range Input */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(to right, #10b981, #10b981) left / var(--progress-width, 50%) 100% no-repeat, #374151;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #10b981;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  transition: all 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.7);
+}

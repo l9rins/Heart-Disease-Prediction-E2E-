@@ -1,0 +1,55 @@
+# ============================================
+# Heart Disease Prediction - Docker Compose
+# ============================================
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: heart-disease-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./model:/app/model
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: heart-disease-ui
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # MLflow Tracking Server (Optional)
+  mlflow:
+    image: python:3.12-slim
+    container_name: mlflow-server
+    command: >
+      sh -c "pip install mlflow && mlflow server --host 0.0.0.0 --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlruns
+    profiles:
+      - full  # Only starts with --profile full
+    restart: unless-stopped
+
+networks:
+  default:
+    name: heart-disease-network
