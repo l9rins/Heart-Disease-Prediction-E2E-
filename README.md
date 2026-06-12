@@ -1,24 +1,50 @@
-# Heart Disease Prediction E2E System
+# 🫀 Heart Disease Prediction E2E System
 
-[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
-[![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green.svg)](https://fastapi.tiangolo.com/)
+![Heart Disease Banner](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&section=header&text=Heart%20Disease%20Prediction&fontSize=70&animation=fadeIn&fontAlignY=38&desc=Production-Grade%20Machine%20Learning%20Pipeline&descAlignY=51&descSize=20)
+
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg?logo=python)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb.svg?logo=react)](https://react.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green.svg?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-2.1+-orange.svg)](https://xgboost.readthedocs.io/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ed.svg)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ed.svg?logo=docker)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> 🫀 Production-grade heart disease prediction system using machine learning, trained on the UCI Cleveland dataset.
+**[Live App (Coming Soon)](#) • [Report Bug](https://github.com/l9rins/Heart-Disease-Prediction-E2E-/issues) • [Request Feature](https://github.com/l9rins/Heart-Disease-Prediction-E2E-/issues)**
 
-![Heart Disease Predictor Screenshot](docs/screenshot.png)
+</div>
+
+---
+
+## 🚀 Overview
+
+**Heart Disease Prediction E2E System** is a production-grade machine learning application that provides instant risk assessment for heart disease based on clinical measurements. It is trained on the highly-validated **UCI Cleveland dataset** and features a modern architecture utilizing **FastAPI** and **React 19**.
+
+Whether you are a researcher analyzing clinical data or a developer studying end-to-end ML deployments, this system offers a robust, dockerized environment with a beautiful Glassmorphism UI.
+
+> "Predictive analytics in healthcare requires both high accuracy and clear, actionable insights."
+
+---
 
 ## ✨ Features
 
-- **ML Pipeline**: XGBoost classifier with ~90% ROC-AUC accuracy
-- **UCI-Validated**: Strict data validation based on Cleveland dataset research
-- **Modern Stack**: FastAPI backend + React 19 frontend
-- **Glassmorphism UI**: Beautiful Bento Grid layout with Framer Motion animations
-- **Real-time Predictions**: Instant risk assessment with confidence scores
-- **Docker Ready**: One-command deployment with Docker Compose
+*   **ML Pipeline:** XGBoost classifier with ~90% ROC-AUC accuracy.
+*   **UCI-Validated:** Strict data validation based on Cleveland dataset research.
+*   **Modern Stack:** FastAPI backend + React 19 frontend.
+*   **Glassmorphism UI:** Beautiful Bento Grid layout with Framer Motion animations.
+*   **Real-time Predictions:** Instant risk assessment with confidence scores.
+*   **Docker Ready:** One-command deployment with Docker Compose.
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="docs/screenshot.png" alt="Heart Disease Predictor Screenshot" width="800"/>
+</div>
+
+---
 
 ## 🚀 Quick Start
 
@@ -70,6 +96,8 @@ npm run dev
 # API Docs: http://localhost:8000/docs
 ```
 
+---
+
 ## 📊 Model Performance
 
 | Metric | Score |
@@ -79,9 +107,11 @@ npm run dev
 | Recall (Disease) | ≥0.85 |
 | Cross-Validation | 5-fold stratified |
 
+---
+
 ## 🏗️ Project Structure
 
-```
+```text
 Heart-Disease-Prediction-E2E/
 ├── data/
 │   └── heart.csv              # UCI Cleveland dataset
@@ -104,6 +134,8 @@ Heart-Disease-Prediction-E2E/
 ├── docker-compose.yml         # Multi-container setup
 └── README.md
 ```
+
+---
 
 ## 🔬 Dataset
 
@@ -130,6 +162,8 @@ This project uses the [UCI Cleveland Heart Disease Dataset](https://archive.ics.
 | slope | ST segment slope | 1-3 |
 | ca | Major vessels (fluoroscopy) | 0-4 |
 | thal | Thalassemia | 3=Normal, 6=Fixed, 7=Reversible |
+
+---
 
 ## 🔌 API Reference
 
@@ -172,6 +206,8 @@ Response:
 }
 ```
 
+---
+
 ## 🧪 Testing
 
 ```bash
@@ -184,6 +220,8 @@ cd frontend
 npx tsc --noEmit
 ```
 
+---
+
 ## ⚠️ Medical Disclaimer
 
 > **IMPORTANT**: This tool is for **educational and research purposes only**. It is **NOT** FDA-approved and should **NOT** be used for medical diagnosis or treatment decisions.
@@ -194,19 +232,24 @@ npx tsc --noEmit
 >
 > The developers assume no liability for any decisions made based on this tool's predictions.
 
-## 📄 License
+---
 
-MIT License - see [LICENSE](LICENSE) for details.
+## 🤝 Contributing
 
-## 🙏 Acknowledgments
+Contributions, issues, and feature requests are welcome! 
 
-- [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/heart+disease) for the Cleveland Heart Disease dataset
-- [FastAPI](https://fastapi.tiangolo.com/) for the excellent Python web framework
-- [XGBoost](https://xgboost.readthedocs.io/) for the gradient boosting implementation
-- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+1.  **Fork** the repository.
+2.  Create your **Feature Branch** (`git checkout -b feature/AmazingFeature`).
+3.  **Commit** your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  **Push** to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a **Pull Request**.
 
 ---
 
-<p align="center">
-  Built with ❤️ by <a href="https://github.com/l9rins">l9rins</a>
-</p>
+<div align="center">
+
+**Built with ❤️ by [l9rins](https://github.com/l9rins)**
+
+Licensed under [MIT](./LICENSE) © 2026
+
+</div>
